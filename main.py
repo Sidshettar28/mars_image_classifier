@@ -1,5 +1,5 @@
 import streamlit as st
-from PIL import image
+# from PIL import image
 
 # Set the page layout
 # st.set_page_config(page_title="Sidebar Navigation", layout="wide")
