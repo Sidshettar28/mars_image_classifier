@@ -5,7 +5,7 @@ import streamlit as st
 
 # Sidebar for navigation
 st.sidebar.title("Navigation")
-page = st.sidebar.selectbox(
+page = st.sidebar.radio(
     "Select a page:",
     ["About",  "Classification", "History"]
 )
