@@ -2,7 +2,7 @@ import streamlit as st
 st.title("Mars Image Classification")
 
 # Set the page layout
-st.set_page_config(layout="wide")
+# st.set_page_config(layout="wide")
 
 # Create three columns for sidebars and the main content area
 col1, col2, col3 = st.columns([1, 1, 2], gap="medium")
