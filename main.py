@@ -1,7 +1,10 @@
 import streamlit as st
+from PIL import image
 
 # Set the page layout
 # st.set_page_config(page_title="Sidebar Navigation", layout="wide")
+
+IMAGE_URL = "https://media.istockphoto.com/id/1353996563/photo/following-shot-of-brave-astronaut-in-space-suit-confidently-walking-on-mars-to-earth-alien.jpg"
 
 # Sidebar for navigation
 st.sidebar.title("Navigation")
@@ -12,6 +15,7 @@ page = st.sidebar.radio(
 
 # Main Content Area
 if page == "About":
+    st.image(IMAGE_URL, caption = "Image Classification")
     st.title("Welcome to the About Page")
     st.write("This is the about page of your app.")
     st.write("You can include introductory text, charts, or other content here.")
