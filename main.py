@@ -4,7 +4,7 @@ import streamlit as st
 # Set the page layout
 # st.set_page_config(page_title="Sidebar Navigation", layout="wide")
 
-IMAGE_URL = "https://media.istockphoto.com/id/1353996563/photo/following-shot-of-brave-astronaut-in-space-suit-confidently-walking-on-mars-to-earth-alien.jpg"
+IMAGE_URL = "https://media.istockphoto.com/id/1353996563/photo/following-shot-of-brave-astronaut-in-space-suit-confidently-walking-on-mars-to-earth-alien.jpg?s=612x612&w=0&k=20&c=uMcSSDzIB5uooR6CN0Uvytlliyc0dR5iAhKODQpUr2c="
 
 # Sidebar for navigation
 st.sidebar.title("Navigation")
@@ -19,7 +19,6 @@ if page == "About":
     st.title("Welcome to the About Page")
     st.write("This is the about page of your app.")
     st.write("You can include introductory text, charts, or other content here.")
-    st.bar_chart([3, 2, 4, 5])
 
 elif page == "Classification":
     st.title("About Us")
