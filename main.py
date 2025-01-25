@@ -17,8 +17,7 @@ page = st.sidebar.radio(
 if page == "About":
     st.image(IMAGE_URL, caption = "Image Classification")
     st.title("Welcome to the About Page")
-    st.write("This is the about page of your app.")
-    st.write("You can include introductory text, charts, or other content here.")
+    st.write("As space exploration companies continue to explore planets in our solar system, it is imprtant that they not only focus on the actual exploration of a planet, but also mapping it out for future missions. As AI continues to become more advanced, it's abilities")
 
 elif page == "Classification":
     st.title("About Us")
