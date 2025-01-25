@@ -17,7 +17,9 @@ page = st.sidebar.radio(
 if page == "About":
     st.image(IMAGE_URL, caption = "Image Classification")
     st.title("Welcome to the About Page")
-    st.write("As space exploration companies continue to explore planets in our solar system, it is imprtant that they not only focus on the actual exploration of a planet, but also mapping it out for future missions. As AI continues to become more advanced, it's abilities")
+    st.write("As space exploration companies continue to explore planets in our solar system, it is important that they not only focus on the actual exploration of a planet, but also mapping it out for future missions. As AI continues to evolve, it's abilities are able to provide these companies with an easier way of analyzing images taken during said missions.")
+    st.write("\nAfter brainstorming ways to create a model that is able to analyze and categorize images, I was able to use different machine learning processes to accurately carry out this task. To ensure that my model was as accurate as possible, I began by compiling different methods of machine learning and test which was most accurate.")
+    st.write("\nTo summarize what I did, I used a dataset provided by _______ with numerous images of mars taken by past missions, to train, test, validate each machine learning method. After this, I used a python code to determine which one presented the most accurate results. Now, using github, I am able to deploy a service for indiviudals to utilize by themselves.")
 
 elif page == "Classification":
     st.title("About Us")
