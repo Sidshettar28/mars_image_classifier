@@ -1,10 +1,56 @@
 import streamlit as st
-# from PIL import image
+import tensorflow as tf
+import numpy as np
+from tensorflow.keras.applications.resnet import preprocess_input
+from PIL import Image
+import pickle
+from sklearn.neural_network import MLPClassifier
+from tensorflow.keras.layers import GlobalAveragePooling2D
+from tensorflow.keras.models import Model
 
 # Set the page layout
 # st.set_page_config(page_title="Sidebar Navigation", layout="wide")
 
+# constants
+IMG_SIZE = (224, 224)
+IMG_ADDRESS = "https://www.mub.eps.manchester.ac.uk/science-engineering/wp-content/uploads/sites/59/2021/10/Mars-banner.jpg"
+IMAGE_NAME = "user_image.png"
+CLASS_LABEL = ["apxs", "apxs cal target", "chemin inlet open", "drill", "drt front", "drt side", "ground", "horizon", "inlet", "mahli cal target",  "mastcam cal target", "observation tray", "portion box", "portion tube", "portion tube opening", "rems uv sensor",  "scoop",  "wheel"]
+CLASS_LABEL.sort()
+
 IMAGE_URL = "https://media.istockphoto.com/id/1353996563/photo/following-shot-of-brave-astronaut-in-space-suit-confidently-walking-on-mars-to-earth-alien.jpg?s=612x612&w=0&k=20&c=uMcSSDzIB5uooR6CN0Uvytlliyc0dR5iAhKODQpUr2c="
+
+@st.cache_resource
+def get_ConvNeXtXLarge_model():
+
+    # Download the model, valid alpha values [0.25,0.35,0.5,0.75,1]
+    base_model = tf.keras.applications.ConvNeXtXLarge(input_shape=(224, 224, 3), include_top=False, weights='imagenet')
+    # Add average pooling to the base
+    x = base_model.output
+    x = GlobalAveragePooling2D()(x)
+    model_frozen = Model(inputs=base_model.input,outputs=x)
+
+    return model_frozen
+
+
+@st.cache_resource
+def load_sklearn_models(model_path):
+
+    with open(model_path, 'rb') as model_file:
+        final_model = pickle.load(model_file)
+
+    return final_model
+
+
+def featurization(image_path, model):
+
+    img = tf.keras.preprocessing.image.load_img(image_path, target_size=IMG_SIZE)
+    img_array = tf.keras.preprocessing.image.img_to_array(img)
+    img_batch = np.expand_dims(img_array, axis=0)
+    img_preprocessed = preprocess_input(img_batch)
+    predictions = model.predict(img_preprocessed)
+
+    return predictions
 
 # Sidebar for navigation
 st.sidebar.title("Navigation")
@@ -22,10 +68,38 @@ if page == "About":
     st.write("\nTo summarize what I did, I used a dataset provided by _______ with numerous images of mars taken by past missions, to train, test, validate each machine learning method. After this, I used a python code to determine which one presented the most accurate results. Now, using github, I am able to deploy a service for indiviudals to utilize by themselves.")
 
 elif page == "Classification":
-    st.title("About Us")
-    st.write("This is the about page of your app.")
-    st.write("Here, you can describe the purpose of your app or provide background information.")
-    st.image("https://via.placeholder.com/400", caption="About Us")
+    # get the featurization model
+    ConvNeXtXLarge_featurized_model = get_ConvNeXtXLarge_model()
+    # load ultrasound image
+    classification_model = load_sklearn_models("MLP_best_model.pkl")
+
+
+    # web app
+
+    # title
+    st.title("Mars Image Classification")
+    # image
+    st.image(IMG_ADDRESS, caption = "Mars Image Classification")
+
+    # input image
+    st.subheader("Please Upload a Mars image")
+
+    # file uploader
+    image = st.file_uploader("Please Upload a Mars Image", type = ["jpg", "png", "jpeg"], accept_multiple_files = False, help = "Upload an Image")
+
+    if image:
+        user_image = Image.open(image)
+        # save the image to set the path
+        user_image.save(IMAGE_NAME)
+        # set the user image
+        st.image(user_image, caption = "User Uploaded Image")
+
+        #get the features
+        with st.spinner("Processing......."):
+            image_features = featurization(IMAGE_NAME, ConvNeXtXLarge_featurized_model)
+            model_predict = classification_model.predict(image_features)
+            result_label = CLASS_LABEL[model_predict[0]]
+            st.success(f"Prediction: {result_label}")
 
 elif page == "History":
     st.title("Contact Us")
