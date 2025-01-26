@@ -104,6 +104,7 @@ elif page == "Classification":
             model_predict = classification_model.predict(image_features)
             result_label = CLASS_LABEL[model_predict[0]]
             st.success(f"Prediction: {result_label}")
+            st.write(model_predict[0])
 
         # Save the result in history
         st.session_state["history"].append({"name": image.name, "label": result_label, "image": user_image})
